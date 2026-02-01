@@ -129,7 +129,7 @@ def solve_nonogram(event):
                         valid_possibilities.append(p)
                 
                 if not valid_possibilities:
-                    message_el.innnerText = "解なし"
+                    message_el.innerText = "解なし"
                     return
                 
                 for r in range(N):

@@ -39,11 +39,11 @@
 
     <script>
         function toggleDarkMode(){
-            document.body.classList.toggle('dak-mode');
+            document.body.classList.toggle('dark-mode');
         }
 
         function resetBoard(){
-            const input = document.querySelectorAll('.hint-input');
+            const inputs = document.querySelectorAll('.hint-input');
             inputs.forEach(input => input.value = '');
             const cells = document.querySelectorAll('.main-cell');
             cells.forEach(cell => {
@@ -82,10 +82,10 @@
                 } else if (isTopHint){
                     div.className = 'cell hint-cell top-hint';
                     const input = createHintInput(row, col);
-                    div.appendChild(ipnut);
+                    div.appendChild(input);
                 } else if (isLeftHint){
-                    div.className = 'cell hin^cell left-hint';
-                    const input = CredentialsContainer(row, col);
+                    div.className = 'cell hint-cell left-hint';
+                    const input = createHintInput(row, col);
                     div.appendChild(input);
                 } else if (isMainGrid){
                     div.className = 'cell main-cell';
@@ -104,23 +104,23 @@
                 if (col === M - 1) div.classList.add('border-right-bold');
                 if (row === M - 1) div.classList.add('border-bottom-bold');
 
-                container.append(div);
+                container.appendChild(div);
             }
         }
 
         function createHintInput(r, c){
             const input = document.createElement('input');
             input.type = 'text';
-            input.className - 'hint-input';
+            input.className = 'hint-input';
             input.maxLength = 2;
 
-            return input
+            return input;
         }
 
         window.onload = generateGrid;
     </script>
 
-    <script type = "py" src="./main.py"><</script>
+    <script type = "py" src="./main.py"></script>
 
 </body>
 </html>
