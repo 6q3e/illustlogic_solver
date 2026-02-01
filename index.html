@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>イラロジソルバー</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</head>
+<body>
+    
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" onchange="toggleDarkMode()">
+            <div class="slider"></div>
+        </label>
+    </div>
+
+    <h1>イラロジソルバー</h1>
+
+    <div class="settings-area">
+        <label for="grid-size">マス目のサイズ</label>
+        <input type="number" id="grid-size" min="5" max="50" value="20">
+        <button class="btn" onclick="generateGrid()">マス目生成</button>
+    </div>
+
+    <div id="nono-container" class="grid-container"></div>
+
+    <div class="controls">
+        <button py-click="solve_nonogram" class="btn">Solve</button>
+        <button onclick="resetBoard()" class="btn reset">Reset</button>
+    </div>
+
+    <p id="message"></p>
+
+    <footer>
+        &copy; 2026 卯村ウト All Rights Reserved.
+    </footer>
+
+    <script>
+        function toggleDarkMode(){
+            document.body.classList.toggle('dak-mode');
+        }
+
+        function resetBoard(){
+            const input = document.querySelectorAll('.hint-input');
+            inputs.forEach(input => input.value = '');
+            const cells = document.querySelectorAll('.main-cell');
+            cells.forEach(cell => {
+                cell.classList.remove('filled');
+                cell.classList.remove('empty-mark');
+            });
+
+            document.getElementById('message').innerText = '';
+        }
+
+        function generateGrid(){
+            const container = document.getElementById('nono-container');
+            const sizeInput = document.getElementById('grid-size');
+            let N = parseInt(sizeInput.value);
+
+            if (N < 5) N = 5;
+            if (N > 50) N = 50;
+            sizeInput.value = N;
+            const M = Math.round(N / 2);
+            const totalSize = M + N;
+            container.style.gridTemplateColumns = `repeat(${totalSize}, 25px)`;
+            container.innerHTML = '';
+
+            for (let i = 0; i < totalSize * totalSize; i++){
+                const row = Math.floor(i / totalSize);
+                const col = i % totalSize;
+                const div = document.createElement('div');
+
+                const isTopLeftCorner = (row < M && col < M);
+                const isTopHint = (row < M && col >= M);
+                const isLeftHint = (row >= M && col < M);
+                const isMainGrid = (row >= M && col >= M);
+
+                if (isTopLeftCorner){
+                    div.className = 'cell invisible'
+                } else if (isTopHint){
+                    div.className = 'cell hint-cell top-hint';
+                    const input = createHintInput(row, col);
+                    div.appendChild(ipnut);
+                } else if (isLeftHint){
+                    div.className = 'cell hin^cell left-hint';
+                    const input = CredentialsContainer(row, col);
+                    div.appendChild(input);
+                } else if (isMainGrid){
+                    div.className = 'cell main-cell';
+                    const relativeR = row - M;
+                    const relativeC = col - M;
+                    div.id = `main-${relativeR}-${relativeC}`;
+                    if ((relativeC + 1) % 5 === 0 && relativeC !== N - 1){
+                        div.classList.add('thick-right');
+                    } 
+
+                    if ((relativeR + 1) % 5 === 0 && relativeR !== N - 1){
+                        div.classList.add('thick-bottom');
+                    }
+                }
+
+                if (col === M - 1) div.classList.add('border-right-bold');
+                if (row === M - 1) div.classList.add('border-bottom-bold');
+
+                container.append(div);
+            }
+        }
+
+        function createHintInput(r, c){
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className - 'hint-input';
+            input.maxLength = 2;
+
+            return input
+        }
+
+        window.onload = generateGrid;
+    </script>
+
+    <script type = "py" src="./main.py"><</script>
+
+</body>
+</html>
